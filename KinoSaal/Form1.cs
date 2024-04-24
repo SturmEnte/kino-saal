@@ -12,8 +12,10 @@ namespace KinoSaal
         private const int SEATS_Y = 5;
 
         private const int GAB = 5;
+        private const int INFO_PERCENTAGE = 13;
 
         private bool[,] seats;
+        private Label[] maxFreeLabels;
 
         public Form1()
         {
@@ -23,12 +25,41 @@ namespace KinoSaal
         private void Form1_Load(object sender, EventArgs e)
         {
             seats = new bool[SEATS_Y, SEATS_X];
+            maxFreeLabels = new Label[SEATS_Y];
 
-            int seatWidht = ((END_X - START_X) / SEATS_X) - ((SEATS_X - 1) * GAB);
-            int seatHeight = ((END_Y - START_Y) / SEATS_Y) - ((SEATS_Y - 1) * GAB);
+            GroupBox maxFreeGroupBox = new GroupBox();
+            GroupBox seatsGroupBox = new GroupBox();
+
+            const int WIDTH = END_X - START_X;
+            const int INFO_WIDTH = WIDTH / 100 * INFO_PERCENTAGE;
+            const int SEATS_WIDTH = WIDTH - INFO_WIDTH - GAB;
+            const int HEIGHT = END_Y - START_Y;
+
+            maxFreeGroupBox.Width = INFO_WIDTH;
+            maxFreeGroupBox.Height = HEIGHT;
+            maxFreeGroupBox.Location = new Point(START_X, START_Y);
+            maxFreeGroupBox.Text = "Max.";
+            
+            seatsGroupBox.Width = SEATS_WIDTH;
+            seatsGroupBox.Height = Height;
+            seatsGroupBox.Location = new Point(START_X + INFO_WIDTH + GAB);
+            seatsGroupBox.Text = "Sitze";
+
+            int seatWidht = (SEATS_WIDTH / SEATS_X) - ((SEATS_X - 1) * GAB);
+            int seatHeight = (HEIGHT / SEATS_Y) - ((SEATS_Y - 1) * GAB);
+
+            Controls.Add(maxFreeGroupBox);
+            Controls.Add(seatsGroupBox);
 
             for(int y = 0; y < SEATS_Y; y++)
             {
+
+                Label label = new Label();
+                label.Text = "#";
+                label.Location = new Point((START_X + INFO_WIDTH) / 2 - label.Width / 2 , HEIGHT / SEATS_Y * (y + 1) - label.Height / 2);
+                maxFreeGroupBox.Controls.Add(label);
+                maxFreeLabels[y] = label;
+
                 for(int x = 0; x < SEATS_X; x++)
                 {
                     seats[x, y] = true;
@@ -43,7 +74,8 @@ namespace KinoSaal
 
                     button.Click += new EventHandler(ToggleSeat);
 
-                    Controls.Add(button);
+                    //Controls.Add(button);
+                    seatsGroupBox.Controls.Add(button);
                 }
             }
         }
