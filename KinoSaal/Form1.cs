@@ -22,20 +22,20 @@ namespace KinoSaal
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            seats = new bool[SEATS_X, SEATS_Y];
+            seats = new bool[SEATS_Y, SEATS_X];
 
             int seatWidht = ((END_X - START_X) / SEATS_X) - ((SEATS_X - 1) * GAB);
             int seatHeight = ((END_Y - START_Y) / SEATS_Y) - ((SEATS_Y - 1) * GAB);
 
-            for(int x = 0; x < SEATS_X; x++)
+            for(int y = 0; y < SEATS_Y; y++)
             {
-                for(int y = 0; y < SEATS_Y; y++)
+                for(int x = 0; x < SEATS_X; x++)
                 {
                     seats[x, y] = true;
 
                     Button button = new Button();
-                    button.Text = (x+1).ToString() + ":" + (y+1).ToString();
-                    button.Name = (x).ToString() + ":" + (y).ToString();
+                    button.Text = (y+1).ToString() + ":" + (x+1).ToString();
+                    button.Name = (y).ToString() + ":" + (x).ToString();
                     button.Location = new Point(START_X + (seatWidht * x + GAB), START_Y + (seatHeight * y + GAB));
                     button.Width = seatWidht;
                     button.Height = seatHeight;
@@ -53,12 +53,12 @@ namespace KinoSaal
             Button button = (Button)sender;
 
             string[] parts = button.Name.Split(":");
-            int x = int.Parse(parts[0]);
-            int y = int.Parse(parts[1]);
+            int x = int.Parse(parts[1]);
+            int y = int.Parse(parts[0]);
 
-            seats[x, y] = !seats[x, y];
+            seats[y, x] = !seats[y, x];
 
-            if (seats[x, y])
+            if (seats[y, x])
             {
                 button.BackColor = Color.Green;    
             } else
